@@ -35,5 +35,16 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+@app.teardown_request
+def teardown_request(exception):
+    #Closes the database again at the end of the request.
+    db = getattre(g, 'db', None)
+    if db is not None:
+        db.close()
+
 if __name__ == '__main__':
     app.run(debug = True)
