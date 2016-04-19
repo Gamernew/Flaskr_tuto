@@ -77,7 +77,7 @@ def login():
             session['logged_in'] = True
             flash('You were logged_in') #display You were logged_in
             return redirect(url_for('show_entries'))
-        return render_template('login.html', error=error)
+    return render_template('login.html', error=error)
 
 #logout
 @app.route('/logout')
