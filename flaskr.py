@@ -46,11 +46,22 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
-@app.route('/')
+@app.route('/') #path redirect root
 def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc') #select title, text in the database
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
+
+#add new entry
+@app.route('/add', methods=['POST']) #path route add with methods Post
+def add_entry():
+    if not session.get('logged_in'): #if not logged_in
+        abort(401)
+    g.db.execute('insert into entries (title, text) values (?, ?)',
+                 [request.form['title'], request.form['text']])
+    g.commit()
+    flash('New entry was successfully posted') #display new entry successfully
+    return redirect(url_for('show_entries'))
 
 if __name__ == '__main__':
     app.run(debug = True)
