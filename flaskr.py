@@ -42,7 +42,7 @@ def before_request():
 @app.teardown_request
 def teardown_request(exception):
     #Closes the database again at the end of the request.
-    db = getattre(g, 'db', None)
+    db = getattr(g, 'db', None)
     if db is not None:
         db.close()
 
@@ -67,12 +67,12 @@ def add_entry():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    if request.method == "POST":
+    if request.method == 'POST':
         #compare username and password
         if request.form['username'] != app.config['USERNAME']:
-            error = "Invalid username"
+            error = 'Invalid username'
         elif request.form['password'] != app.config['PASSWORD']:
-            error = "Invalid password"
+            error = 'Invalid password'
         else:
             session['logged_in'] = True
             flash('You were logged_in') #display You were logged_in
