@@ -59,7 +59,7 @@ def add_entry():
         abort(401)
     g.db.execute('insert into entries (title, text) values (?, ?)',
                  [request.form['title'], request.form['text']])
-    g.commit()
+    g.db.commit()
     flash('New entry was successfully posted') #display new entry successfully
     return redirect(url_for('show_entries'))
 
